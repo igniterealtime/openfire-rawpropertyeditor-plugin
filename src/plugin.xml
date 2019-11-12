@@ -2,13 +2,13 @@
 
 <plugin>
     <class>org.jivesoftware.openfire.plugin.RawPropertyEditorPlugin</class>
-    <name>rawpropertyeditor</name>
-    <description>Raw Property Editor</description>
-    <author>Liam Gregory</author>
-    <version>0.0.1</version>
-    <date>01/01/2016</date>
-   
-    <minServerVersion>3.10.3</minServerVersion>
+    <name>${pom.name}</name>
+	<description>${pom.description}</description>
+	<author>${pom.organization.name}</author>
+	<version>${pom.version}</version>
+	<date>${plugin.build.date}</date>
+	<minServerVersion>4.4.2</minServerVersion>
+    
     <adminconsole>
        
     
