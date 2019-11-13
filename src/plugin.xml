@@ -3,11 +3,11 @@
 <plugin>
     <class>org.jivesoftware.openfire.plugin.RawPropertyEditorPlugin</class>
     <name>${pom.name}</name>
-	<description>${pom.description}</description>
-	<author>${pom.organization.name}</author>
-	<version>${pom.version}</version>
-	<date>${plugin.build.date}</date>
-	<minServerVersion>4.4.2</minServerVersion>
+    <description>${pom.description}</description>
+    <author>Liam Gregory</author>
+    <version>${pom.version}</version>
+    <date>${plugin.build.date}</date>
+    <minServerVersion>4.4.2</minServerVersion>
     
     <adminconsole>
        

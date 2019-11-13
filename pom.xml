@@ -2,9 +2,9 @@
   <modelVersion>4.0.0</modelVersion>
   
   <parent> <!-- needed for things like ${jetty.version} -->
-  	<artifactId>plugins</artifactId>
-	<groupId>org.igniterealtime.openfire</groupId>
-	<version>4.4.2</version>
+    <artifactId>plugins</artifactId>
+    <groupId>org.igniterealtime.openfire</groupId>
+    <version>4.4.4</version>
   </parent>
   
   <groupId>rawpropertyeditor</groupId>
@@ -13,72 +13,80 @@
   <version>1.0.0</version>
   <description>RawPropertyEditor Plugin</description>
   <organization>
-  	<name>ComitFS</name>
+    <name>ComitFS</name>
   </organization>
-  
-	<!-- download plugins from this repo -->
-	<pluginRepositories>
-		<pluginRepository>
-            		<id>igniterealtime</id>
-            		<name>Ignite Realtime Repository</name>
-            		<url>https://igniterealtime.org/archiva/repository/maven/</url>
-        	</pluginRepository>
-	</pluginRepositories>
-	
-	<dependencies>
-		<!-- DB -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.6</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
-			<version>1.8.0.10</version>
-		</dependency>
 
-		<!-- Openfire Server -->
-		<!-- <dependency>
-			<groupId>org.igniterealtime.openfire</groupId>
-			<artifactId>xmppserver</artifactId>
-			<version>${openfire.version}</version>
-			<scope>provided</scope>
-		</dependency> -->
+    <repositories>
+        <repository>
+            <id>igniterealtime</id>
+            <name>Ignite Realtime Repository</name>
+            <url>https://igniterealtime.org/archiva/repository/maven/</url>
+        </repository>
+    </repositories>
+    
+    <!-- download plugins from this repo -->
+    <pluginRepositories>
+        <pluginRepository>
+                    <id>igniterealtime</id>
+                    <name>Ignite Realtime Repository</name>
+                    <url>https://igniterealtime.org/archiva/repository/maven/</url>
+            </pluginRepository>
+    </pluginRepositories>
+    
+    <dependencies>
+        <!-- DB -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hsqldb</groupId>
+            <artifactId>hsqldb</artifactId>
+            <version>1.8.0.10</version>
+        </dependency>
 
-		<!-- Logging -->
-		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.17</version>
-		</dependency>
-		
-		<!-- used in the JSPs -->
-		<dependency>
-		    <groupId>ant-contrib</groupId>
-		    <artifactId>ant-contrib</artifactId>
-		    <version>1.0b3</version>
-		</dependency>
-		<dependency>
-		    <groupId>org.apache.commons</groupId>
-		    <artifactId>commons-lang3</artifactId>
-		    <version>3.9</version>
-		</dependency>
+        <!-- Openfire Server -->
+        <!-- <dependency>
+            <groupId>org.igniterealtime.openfire</groupId>
+            <artifactId>xmppserver</artifactId>
+            <version>${openfire.version}</version>
+            <scope>provided</scope>
+        </dependency> -->
 
-	</dependencies>
-	
+        <!-- Logging -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+        
+        <!-- used in the JSPs -->
+        <dependency>
+            <groupId>ant-contrib</groupId>
+            <artifactId>ant-contrib</artifactId>
+            <version>1.0b3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.9</version>
+        </dependency>
+
+    </dependencies>
+    
   <build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-			
-			<!-- Creates the rawpropertyeditor.jar which includes the rawpropertyeditor.jar-<version>.jar in it's lib folder -->
-			<plugin>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            
+            <!-- Creates the rawpropertyeditor.jar which includes the rawpropertyeditor.jar-<version>.jar in it's lib folder -->
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>3.1.1</version>
@@ -137,64 +145,37 @@
             
             <!-- This switches off enforcement which happens in parent openfire pom, otherwise doesn't compile when parent openfire pom included -->
             <plugin>
-		        <groupId>org.apache.maven.plugins</groupId>
-		        <artifactId>maven-enforcer-plugin</artifactId>
-		        <version>3.0.0-M2</version>
-		        <executions>
-		          <execution>
-		            <id>enforce-no-snapshots</id>
-		            <goals>
-		              <goal>enforce</goal>
-		            </goals>
-		            <configuration>
-		              <rules>
-		                <requireReleaseDeps>
-		                  <message>No Snapshots Allowed!</message>
-		                </requireReleaseDeps>
-		              </rules>
-		              <fail>false</fail> <!-- switches off enforcement which happens in parent openfire pom -->
-		            </configuration>
-		          </execution>
-		        </executions>
-		    </plugin>
-		    
-		    <!-- Copies new rawpropertyeditor.jar to OF server (overwrites it) and deletes old rawpropertyeditor directory -->
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.8</version>
-				<executions>
-					<execution>
-						<phase>install</phase>
-						<configuration>
-							<target>
-								<delete dir="${basedir}/../Openfire-4.4.2/distribution/target/distribution-base/plugins/${project.artifactId}" includeemptydirs="true"/>
-								<copy
-									file="target/${project.artifactId}.jar"
-									tofile="${basedir}/../Openfire-4.4.2/distribution/target/distribution-base/plugins/${project.artifactId}.jar" />
-							</target>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-		
-	</build>
-	<profiles>
-		<profile>
-			<!-- Used only when invoking release:perform so as not to re-run tests 
-				as part of the deployment -->
-			<id>release</id>
-			<properties>
-				<skipTests>true</skipTests>
-			</properties>
-		</profile>
-	</profiles>
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<openfire.version>4.4.2</openfire.version>
-		<powermock.version>1.4.6</powermock.version>
-	</properties>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>3.0.0-M2</version>
+                <executions>
+                  <execution>
+                    <id>enforce-no-snapshots</id>
+                    <goals>
+                      <goal>enforce</goal>
+                    </goals>
+                    <configuration>
+                      <rules>
+                        <requireReleaseDeps>
+                          <message>No Snapshots Allowed!</message>
+                        </requireReleaseDeps>
+                      </rules>
+                      <fail>false</fail> <!-- switches off enforcement which happens in parent openfire pom -->
+                    </configuration>
+                  </execution>
+                </executions>
+            </plugin>            
+        </plugins>
+        
+    </build>
+    <profiles>
+        <profile>
+            <!-- Used only when invoking release:perform so as not to re-run tests 
+                as part of the deployment -->
+            <id>release</id>
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
+        </profile>
+    </profiles>
 </project>
