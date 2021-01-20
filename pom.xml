@@ -4,7 +4,7 @@
   <parent> <!-- needed for things like ${jetty.version} -->
     <artifactId>plugins</artifactId>
     <groupId>org.igniterealtime.openfire</groupId>
-    <version>4.4.4</version>
+    <version>4.4.2</version>
   </parent>
   
   <groupId>rawpropertyeditor</groupId>

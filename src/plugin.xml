@@ -10,43 +10,30 @@
     <minServerVersion>4.4.2</minServerVersion>
     
     <adminconsole>
-       
-    
-  
+        <tab id="tab-users" >
+            <sidebar id="sidebar-users" >
+                <item id="user-summary" >
+                    <sidebar id="sidebar-users-options" >
+                        <item id="user-propertiesplugin" name="Edit User Properties" url="user-propertiesplugin.jsp" description="View, change and edit user properties"/>
+                    </sidebar>
+                </item>
+            </sidebar>
 
-        <!-- Users/Groups -->
-    <tab id="tab-users" >
-
-        <!-- Users -->
-        <sidebar id="sidebar-users" >
-
-            <!-- User Summary -->
-            <item id="user-summary" >
-
-                <!-- User Options -->
-                <sidebar id="sidebar-users-options" >
-
-                    <item id="User-propertiesplugin" name="Edit User Properties" url="User-propertiesplugin.jsp" description="View, change and edit user properties"/>
-                </sidebar>
-            </item>
-        </sidebar>
-
-          <sidebar id="sidebar-groups" >
-
-            <item id="group-summary" >
-
-                <sidebar id="sidebar-group-options">
-
-                         <item id="group-propertiesplugin" name="Edit Group Properties"  url="group-propertiesplugin.jsp" description="View, change and edit group properties"/>
-                    
-                   
-                </sidebar>
-            </item>
-        </sidebar>
-            </tab>
-
-
-
-</adminconsole>
-
+            <sidebar id="sidebar-groups" >
+                <item id="group-summary" >
+                    <sidebar id="sidebar-group-options">
+                             <item id="group-propertiesplugin" name="Edit Group Properties"  url="group-propertiesplugin.jsp" description="View, change and edit group properties"/>                                       
+                    </sidebar>
+                </item>
+            </sidebar>
+            
+            <sidebar id="sidebar-groupchat-administration" >
+                <item id="muc-room-summary" >
+                    <sidebar id="sidebar-groupchat-options">
+                             <item id="groupchat-propertiesplugin" name="Properties"  url="groupchat-propertiesplugin.jsp" description="View, change and edit groupchat properties"/>                                       
+                    </sidebar>
+                </item>
+            </sidebar>            
+        </tab>
+    </adminconsole>
 </plugin>
