@@ -16,6 +16,8 @@ import org.jivesoftware.openfire.user.User;
 import org.jivesoftware.openfire.user.UserManager;
 import org.jivesoftware.openfire.user.UserNotFoundException;
 import org.jivesoftware.openfire.muc.*;
+import org.jivesoftware.util.cache.Cache;
+import org.jivesoftware.util.cache.CacheFactory;
 
 import org.xmpp.packet.JID;
 
@@ -24,7 +26,7 @@ public class RawPropertyEditorPlugin implements Plugin {
     private UserManager userManager;
     private XMPPServer server;
     private GroupManager groupManager;
-    private Map<String, Map<String, String>> muc_properties;
+    private Cache muc_properties;	
 
     @Override
     public void initializePlugin(PluginManager manager, File pluginDirectory)
@@ -33,7 +35,7 @@ public class RawPropertyEditorPlugin implements Plugin {
         server = XMPPServer.getInstance();
         userManager = server.getUserManager();
         groupManager = GroupManager.getInstance();
-        muc_properties = new HashMap<String, Map<String, String>>();
+		muc_properties = CacheFactory.createLocalCache("MUC Room Properties");	
     }
 
     private User getAndCheckUser(String username) {
@@ -120,7 +122,7 @@ public class RawPropertyEditorPlugin implements Plugin {
 
         try {
             MUCRoom room = server.getMultiUserChatManager().getMultiUserChatService(roomJID).getChatRoom(roomJID.getNode());
-            properties = muc_properties.get(roomJID.toString());
+            properties = (Map<String, String>) muc_properties.get(roomJID.toString());
 
             if (properties == null)
             {

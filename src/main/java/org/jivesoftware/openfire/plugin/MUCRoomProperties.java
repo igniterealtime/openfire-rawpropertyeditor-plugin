@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.io.Serializable;
 
 import org.jivesoftware.database.DbConnectionManager;
 import org.jivesoftware.openfire.XMPPServer;
@@ -21,7 +22,7 @@ import org.slf4j.LoggerFactory;
  * Retrieves and stores MUC room properties. Properties are stored in the database.
  *
  */
-public class MUCRoomProperties implements Map<String, String> {
+public class MUCRoomProperties implements Map<String, String>, Serializable  {
 
     private static final Logger Log = LoggerFactory.getLogger(MUCRoomProperties.class);
 
