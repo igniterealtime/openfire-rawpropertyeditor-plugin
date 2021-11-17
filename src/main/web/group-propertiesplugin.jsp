@@ -131,7 +131,7 @@
 
 					<tr>
 						<td><%=propnameES%></td>
-						<td><%=propvalueES%></td>
+                        <td><div style="width:500px; overflow:hidden; text-overflow: ellipsis;  white-space: nowrap;"><%=propvalueES%></div></td>
 						<td align="center"><img src="images/file1.png"
 							onclick="doedit('<%=StringEscapeUtils.escapeHtml4(StringEscapeUtils.escapeEcmaScript(propname)) + "','"
 							+ StringEscapeUtils.escapeHtml4(StringEscapeUtils.escapeEcmaScript(propvalue)) + "','"
