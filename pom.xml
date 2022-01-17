@@ -1,155 +1,62 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  
-  <parent> <!-- needed for things like ${jetty.version} -->
-    <artifactId>plugins</artifactId>
-    <groupId>org.igniterealtime.openfire</groupId>
-    <version>4.4.2</version>
-  </parent>
-  
-  <groupId>rawpropertyeditor</groupId>
-  <artifactId>rawpropertyeditor</artifactId>
-  <name>RawPropertyEditor</name>
-  <version>1.0.1-SNAPSHOT</version>
-  <description>RawPropertyEditor Plugin</description>
-  <organization>
-    <name>ComitFS</name>
-  </organization>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+	<artifactId>plugins</artifactId>
+	<groupId>org.igniterealtime.openfire</groupId>
+	<version>4.5.0</version>
+	</parent>
+	<groupId>rawpropertyeditor</groupId>
+	<artifactId>rawpropertyeditor</artifactId>
+	<name>RawPropertyEditor</name>
+	<version>1.0.1</version>
+	<description>RawPropertyEditor Plugin</description>   
+	<build>
+		<sourceDirectory>src/java</sourceDirectory>
+		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+			</plugin>
+			<!-- Compiles the Openfire Admin Console JSP pages. -->
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-jspc-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<dependencies>
+		<dependency>
+			<groupId>ant-contrib</groupId>
+			<artifactId>ant-contrib</artifactId>
+			<version>1.0b3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.9</version>
+		</dependency>
+		<dependency>
+		  <groupId>org.jsoup</groupId>
+		  <artifactId>jsoup</artifactId>
+		  <version>1.14.3</version>
+		</dependency>		
+	</dependencies>	
 
-    <repositories>
-        <repository>
-            <id>igniterealtime</id>
-            <name>Ignite Realtime Repository</name>
-            <url>https://igniterealtime.org/archiva/repository/maven/</url>
-        </repository>
-    </repositories>
-    
-    <!-- download plugins from this repo -->
-    <pluginRepositories>
-        <pluginRepository>
-                    <id>igniterealtime</id>
-                    <name>Ignite Realtime Repository</name>
-                    <url>https://igniterealtime.org/archiva/repository/maven/</url>
-            </pluginRepository>
-    </pluginRepositories>
-    
-    <dependencies>
+	<repositories>
+		<repository>
+			<id>igniterealtime</id>
+			<name>Ignite Realtime Repository</name>
+			<url>https://igniterealtime.org/archiva/repository/maven/</url>
+		</repository>
+	</repositories>
 
-        <!-- used in the JSPs -->
-        <dependency>
-            <groupId>ant-contrib</groupId>
-            <artifactId>ant-contrib</artifactId>
-            <version>1.0b3</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.9</version>
-        </dependency>
-
-    </dependencies>
-    
-  <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-            
-            <!-- Creates the rawpropertyeditor.jar which includes the rawpropertyeditor.jar-<version>.jar in it's lib folder -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.1.1</version>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.igniterealtime.openfire.plugins</groupId>
-                        <artifactId>openfire-plugin-assembly-descriptor</artifactId>
-                        <version>${openfire.version}</version>
-                    </dependency>
-                </dependencies>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <appendAssemblyId>false</appendAssemblyId>
-                            <finalName>${project.artifactId}</finalName>
-                            <attach>false</attach>
-                            <descriptorRefs>
-                                <descriptorRef>openfire-plugin-assembly</descriptorRef>
-                            </descriptorRefs>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <!-- Admin console pages -->
-            <plugin>
-                <groupId>org.eclipse.jetty</groupId>
-                <artifactId>jetty-jspc-maven-plugin</artifactId>
-                <version>${jetty.version}</version>
-                <configuration>
-                    <webAppSourceDirectory>${project.build.sourceDirectory}/../web</webAppSourceDirectory>
-                    <webXml>${project.build.sourceDirectory}/../web/WEB-INF/web.xml</webXml>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>jspc</id>
-                        <goals>
-                            <goal>jspc</goal>
-                        </goals>
-                        <configuration>
-                            <jspc>
-                                <package>org.jivesoftware.openfire.plugin.${project.artifactId}</package>
-                            </jspc>
-                            <sourceVersion>1.8</sourceVersion>
-                            <targetVersion>1.8</targetVersion>
-                            <keepSources>true</keepSources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            
-            <!-- This switches off enforcement which happens in parent openfire pom, otherwise doesn't compile when parent openfire pom included -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.0.0-M2</version>
-                <executions>
-                  <execution>
-                    <id>enforce-no-snapshots</id>
-                    <goals>
-                      <goal>enforce</goal>
-                    </goals>
-                    <configuration>
-                      <rules>
-                        <requireReleaseDeps>
-                          <message>No Snapshots Allowed!</message>
-                        </requireReleaseDeps>
-                      </rules>
-                      <fail>false</fail> <!-- switches off enforcement which happens in parent openfire pom -->
-                    </configuration>
-                  </execution>
-                </executions>
-            </plugin>            
-        </plugins>
-        
-    </build>
-    <profiles>
-        <profile>
-            <!-- Used only when invoking release:perform so as not to re-run tests 
-                as part of the deployment -->
-            <id>release</id>
-            <properties>
-                <skipTests>true</skipTests>
-            </properties>
-        </profile>
-    </profiles>
+	<!-- download plugins from this repo -->
+	<pluginRepositories>
+		<pluginRepository>
+					<id>igniterealtime</id>
+					<name>Ignite Realtime Repository</name>
+					<url>https://igniterealtime.org/archiva/repository/maven/</url>
+			</pluginRepository>
+	</pluginRepositories>
 </project>

@@ -1,36 +1,38 @@
-<%@ page import="java.util.Hashtable"%>
-<%@ page import="net.sf.antcontrib.logic.IfTask.ElseIf"%>
-<%@ page import="org.xmpp.packet.JID" %>
+<%@ taglib uri="admin" prefix="admin" %>
+<admin:FlashMessage/> 
+<%@page import="java.util.Hashtable"%>
+<%@page import="net.sf.antcontrib.logic.IfTask.ElseIf"%>
+
 <%@ page import="java.net.URLEncoder"%>
 <%@ page import="org.jivesoftware.util.Log"%>
 <%@ page
-    import="org.jivesoftware.openfire.XMPPServer,org.jivesoftware.openfire.plugin.RawPropertyEditorPlugin,org.jivesoftware.util.ParamUtils,org.jivesoftware.openfire.*,java.util.HashMap,java.util.Map,org.jivesoftware.util.*,org.apache.commons.text.StringEscapeUtils"
+    import="org.jsoup.Jsoup,org.jsoup.safety.Safelist, org.jivesoftware.openfire.XMPPServer,org.jivesoftware.openfire.plugin.RawPropertyEditorPlugin,org.jivesoftware.util.ParamUtils,org.jivesoftware.openfire.*,java.util.HashMap,java.util.Map,org.jivesoftware.util.*,org.apache.commons.text.StringEscapeUtils"
     errorPage="error.jsp"%>
 
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jstl/fmt_rt" prefix="fmt"%>
 <%
     boolean edit = request.getParameter("edit") != null;
-    final JID roomJID = new JID(ParamUtils.getParameter(request,"roomJID"));
-      
+	String username = Jsoup.clean(ParamUtils.getParameter(request, "username"), Safelist.basic());
     String propname2 = request.getParameter("propname2");
     String propvalue2 = request.getParameter("propvalue2");
     
-    RawPropertyEditorPlugin plugin = (RawPropertyEditorPlugin) XMPPServer.getInstance().getPluginManager().getPlugin("rawpropertyeditor");
+	RawPropertyEditorPlugin plugin = (RawPropertyEditorPlugin) XMPPServer.getInstance().getPluginManager().getPlugin("rawpropertyeditor");
     Map<String, String> properties = null;
 
-    if (roomJID != null) {
+    if (!username.isEmpty() && username != null) {
         try {
-            final String roomName = roomJID.getNode();        
-            properties = plugin.getGroupChatProperties(roomJID);
+            properties = plugin.getUserProperties(username);
         } catch (Exception e) {
         }
     }
 
     if (request.getParameter("save") != null && request.getParameter("save").equals("true")) {
         try {
-            plugin.addGroupChatProperties(roomJID, propname2, propvalue2);
-            properties = plugin.getGroupChatProperties(roomJID);
+
+            System.out.println(username + propname2 + propvalue2 + "");
+            plugin.addProperties(username, propname2, propvalue2);
+            properties = plugin.getUserProperties(username);
         } catch (Exception e) {
 
         }
@@ -38,8 +40,8 @@
     }
     if (request.getParameter("delete") != null && request.getParameter("delete").equals("true")) {
         try {
-            plugin.deleteGroupChatProperties(roomJID, propname2);
-            properties = plugin.getGroupChatProperties(roomJID);
+            plugin.deleteProperties(username, propname2);
+            properties = plugin.getUserProperties(username);
         } catch (Exception e) {
 
         }
@@ -51,9 +53,10 @@
 
 <html>
 <head>
-<title>Room Properties</title>
-<meta name="subPageID" content="groupchat-propertiesplugin" />
-<meta name="extraParams" content="<%= "roomJID="+URLEncoder.encode(roomJID.toBareJID(), "UTF-8") %>"/>
+<title>User Properties</title>
+<meta name="subPageID" content="user-propertiesplugin" />
+<meta name="extraParams"
+    content="<%="username=" + URLEncoder.encode(username, "UTF-8")%>" />
 <style type="text/css">
 .button {
     background-color: #4CAF50;
@@ -86,17 +89,16 @@
 </head>
 <body onload="loaded();">
 
-    <form action="groupchat-propertiesplugin.jsp<%="?roomJID=" + roomJID%>"
+    <form action="User-propertiesplugin.jsp<%="?username=" + username%>"
         method="post" name="propform" id="propform">
-
+		<input name="csrf" value="<c:out value="${csrf}"/>" type="hidden">
         <input type="hidden" name="edit" value=""> <input
             type="hidden" name="propname2" value=""> <input type="hidden"
             name="propvalue2" value=""> <input type="hidden" name="save"
             value="false"> <input type="hidden" name="delete"
             value="false">
         <p>
-            Below is a summary of the room <B> <%=roomJID%>'s
-            </B> properties
+            Below is a summary of the user <B><%=username%>'s</B> properties
         </p>
         <div class="jive-table">
             <table cellpadding="0" cellspacing="0" border="0" width="100%">
@@ -120,7 +122,7 @@
                     <%
                         if (properties != null
                                 || request.getParameter("edit") != null && request.getParameter("edit").equals("true")) {
-                            properties = plugin.getGroupChatProperties(roomJID);
+                            properties = plugin.getUserProperties(username);
                             for (Map.Entry<String, String> property : properties.entrySet()) {
                                 String propname = property.getKey().toString();
                                 String propvalue = property.getValue().toString();
@@ -129,20 +131,20 @@
                     %>
 
                     <tr>
-                        <td><%=propnameES%></td>
+                        <td><div style="width:500px; overflow:hidden; text-overflow: ellipsis;  white-space: nowrap;"><%=propnameES%></div></td>
                         <td><div style="width:500px; overflow:hidden; text-overflow: ellipsis;  white-space: nowrap;"><%=propvalueES%></div></td>
                         <td align="center"><img src="images/file1.png"
                             onclick="doedit('<%=StringEscapeUtils.escapeHtml4(StringEscapeUtils.escapeEcmaScript(propname)) + "','"
                             + StringEscapeUtils.escapeHtml4(StringEscapeUtils.escapeEcmaScript(propvalue)) + "','"
-                            + roomJID%>')"></td>
+                            + StringEscapeUtils.escapeHtml4(StringEscapeUtils.escapeEcmaScript(username))%>')"></td>
                         <%
                             /*
-                                                                                                                                                <td align="center"><img src="images/file2.png"></td>*/
+                                                                                                                                                                                                        <td align="center"><img src="images/file2.png"></td>*/
                         %>
                         <td align="center"><img src="images/file.png"
                             onclick="dodelete('<%=StringEscapeUtils.escapeHtml4(StringEscapeUtils.escapeEcmaScript(propname)) + "','"
                             + StringEscapeUtils.escapeHtml4(StringEscapeUtils.escapeEcmaScript(propvalue)) + "','"
-                            + roomJID%>')"></td>
+                            + StringEscapeUtils.escapeHtml4(StringEscapeUtils.escapeEcmaScript(username))%>')"></td>
 
 
                     </tr>
@@ -173,15 +175,14 @@
             <table cellpadding="0" cellspacing="0" border="0" width="100%">
                 <thead>
                     <tr>
-                        <th colspan="2"><label id="editlabel" value="Edit Property"></th>
+                        <th colspan="2">Edit property</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr valign="top">
                         <td>Property Name:</td>
                         <td><input type="textfield" id="propname" name="propname"
-                            value="<%=propname2%>"
-                            style="z-index: auto; position: relative; line-height: normal; font-size: 13.3333px; transition: none; background: transparent !important;"></td>
+                            value="<%=propname2%>"></td>
                     </tr>
                     <tr valign="top">
                         <td>Property Value:</td>
@@ -193,21 +194,20 @@
                     </tr>
                     <%
                         /*
-                                                                                    <tr valign="top">
-                                                                                        <td>Property Encryption:</td>
-                                                                                        <td><input type="radio" name="encrypt" value="true">Encrypt
-                                                                                            this property value<br> <input type="radio" name="encrypt"
-                                                                                            value="false" checked="">Do not encrypt this property
-                                                                                            value</td>
-                                                                                    </tr>*/
+                                                                                                                <tr valign="top">
+                                                                                                                    <td>Property Encryption:</td>
+                                                                                                                    <td><input type="radio" name="encrypt" value="true">Encrypt
+                                                                                                                        this property value<br> <input type="radio" name="encrypt"
+                                                                                                                        value="false" checked="">Do not encrypt this property
+                                                                                                                        value</td>
+                                                                                                                </tr>*/
                     %>
                 </tbody>
                 <tfoot>
                     <tr>
                         <td colspan="2"><input type="submit" name="jsdosave"
                             value="Save Property"
-                            onclick="dosave('<%=StringEscapeUtils.escapeHtml4(StringEscapeUtils.escapeEcmaScript(propname2)) + "','"
-                        + StringEscapeUtils.escapeHtml4(StringEscapeUtils.escapeEcmaScript(propvalue2))%>')"></td>
+                            onclick="dosave('<%=StringEscapeUtils.escapeHtml4(StringEscapeUtils.escapeEcmaScript(propname2)) + "','" + StringEscapeUtils.escapeHtml4(StringEscapeUtils.escapeEcmaScript(propvalue2))%>')"></td>
                     </tr>
                 </tfoot>
             </table>
@@ -246,7 +246,7 @@
 
             document.getElementById("propform").submit();
         }
-        function dodelete(propname, propvalue, roomJID) {
+        function dodelete(propname, propvalue, username) {
 
             
             document.propform.delete.value = "true";
@@ -267,4 +267,3 @@
         
     </script>
 </html>
-

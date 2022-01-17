@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+    <class>org.jivesoftware.openfire.plugin.RawPropertyEditorPlugin</class>
+    <name>${project.name}</name>
+    <description>${project.description}</description>
+    <author>Liam Gregory</author>
+    <version>${project.version}</version>
+    <date>01/17/2022</date>
+	<csrfProtectionEnabled>true</csrfProtectionEnabled>
+    <minServerVersion>4.5.0</minServerVersion>    
+    <adminconsole>
+        <tab id="tab-users" >
+            <sidebar id="sidebar-users" >
+                <item id="user-summary" >
+                    <sidebar id="sidebar-users-options" >
+                        <item id="user-propertiesplugin" name="Edit User Properties" url="user-propertiesplugin.jsp" description="View, change and edit user properties"/>
+                    </sidebar>
+                </item>
+            </sidebar>
+
+            <sidebar id="sidebar-groups" >
+                <item id="group-summary" >
+                    <sidebar id="sidebar-group-options">
+                             <item id="group-propertiesplugin" name="Edit Group Properties"  url="group-propertiesplugin.jsp" description="View, change and edit group properties"/>                                       
+                    </sidebar>
+                </item>
+            </sidebar>
+            
+            <sidebar id="sidebar-groupchat-administration" >
+                <item id="muc-room-summary" >
+                    <sidebar id="sidebar-groupchat-options">
+                             <item id="groupchat-propertiesplugin" name="Properties"  url="groupchat-propertiesplugin.jsp" description="View, change and edit groupchat properties"/>                                       
+                    </sidebar>
+                </item>
+            </sidebar>            
+        </tab>
+    </adminconsole>
+</plugin>
