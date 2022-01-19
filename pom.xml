@@ -4,12 +4,12 @@
 	<parent>
 	<artifactId>plugins</artifactId>
 	<groupId>org.igniterealtime.openfire</groupId>
-	<version>4.5.0</version>
+	<version>4.7.0</version>
 	</parent>
 	<groupId>rawpropertyeditor</groupId>
 	<artifactId>rawpropertyeditor</artifactId>
 	<name>RawPropertyEditor</name>
-	<version>1.0.2-SNAPSHOT</version>
+	<version>1.0.2</version>
 	<description>RawPropertyEditor Plugin</description>   
 	<build>
 		<sourceDirectory>src/java</sourceDirectory>
