@@ -5,7 +5,7 @@
     <description>${project.description}</description>
     <author>Liam Gregory</author>
     <version>${project.version}</version>
-    <date>01/19/2022</date>
+    <date>2023-11-21</date>
 	<csrfProtectionEnabled>true</csrfProtectionEnabled>
     <minServerVersion>4.7.0</minServerVersion>    
     <adminconsole>
