@@ -5,9 +5,9 @@
     <description>${project.description}</description>
     <author>Liam Gregory</author>
     <version>${project.version}</version>
-    <date>2023-11-21</date>
+    <date>2024-04-30</date>
 	<csrfProtectionEnabled>true</csrfProtectionEnabled>
-    <minServerVersion>4.7.0</minServerVersion>    
+    <minServerVersion>4.8.1</minServerVersion>    
     <adminconsole>
         <tab id="tab-users" >
             <sidebar id="sidebar-users" >

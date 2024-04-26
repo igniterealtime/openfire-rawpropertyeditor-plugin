@@ -126,8 +126,8 @@
                             for (Map.Entry<String, String> property : properties.entrySet()) {
                                 String propname = property.getKey().toString();
                                 String propvalue = property.getValue().toString();
-                                String propnameES = StringUtils.replace(StringUtils.escapeHTMLTags(propname), "'", "''");
-                                String propvalueES = StringUtils.replace(StringUtils.escapeHTMLTags(propvalue), "'", "''");
+                                String propnameES = StringUtils.replace(StringUtils.escapeHTMLTags(propname), "'", "''", new int[1]);
+                                String propvalueES = StringUtils.replace(StringUtils.escapeHTMLTags(propvalue), "'", "''", new int[1]);
                     %>
 
                     <tr>
