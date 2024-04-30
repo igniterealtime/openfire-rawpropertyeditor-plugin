@@ -9,7 +9,7 @@
 	<groupId>rawpropertyeditor</groupId>
 	<artifactId>rawpropertyeditor</artifactId>
 	<name>RawPropertyEditor</name>
-	<version>1.0.4-SNAPSHOT</version>
+	<version>1.0.4</version>
 	<description>RawPropertyEditor Plugin</description>   
 	<build>
 		<sourceDirectory>src/java</sourceDirectory>
