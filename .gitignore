@@ -1,13 +1,30 @@
-# Compiled class file
-*.tmp
-*.bak
-local.properties
-.classpath
-.settings/
-.loadpath
+target/
+work/
+*.class
+
+# Ignore Intellij Idea project files
+*.iml
+*.ipr
+.idea
+atlassian-ide-plugin.xml
+out/
+
+# Ignore Eclipse project files
+.settings
 .project
-.metadata
-/targets
-/bin
+.classpath
+
+# Ignore MacOSX files
 .DS_Store
-/target
+
+# Ignore Netbeans project files
+nbproject/
+nbbuild/
+/bin/
+
+# Microsoft Visual Studio Code
+.vscode/
+
+# build temp folders
+rpmbuild/
+debian/
