@@ -5,9 +5,10 @@
     <description>${project.description}</description>
     <author>Liam Gregory</author>
     <version>${project.version}</version>
-    <date>2024-04-30</date>
+    <date>2025-07-03</date>
 	<csrfProtectionEnabled>true</csrfProtectionEnabled>
-    <minServerVersion>4.8.1</minServerVersion>    
+    <minServerVersion>4.8.1</minServerVersion>
+    <minJavaVersion>11</minJavaVersion>
     <adminconsole>
         <tab id="tab-users" >
             <sidebar id="sidebar-users" >

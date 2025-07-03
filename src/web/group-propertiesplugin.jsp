@@ -1,12 +1,9 @@
 <%@ taglib uri="admin" prefix="admin" %>
-<admin:FlashMessage/> 
-<%@page import="java.util.Hashtable"%>
-<%@page import="net.sf.antcontrib.logic.IfTask.ElseIf"%>
+<admin:FlashMessage/>
 
 <%@ page import="java.net.URLEncoder"%>
-<%@ page import="org.jivesoftware.util.Log"%>
 <%@ page
-	import="org.jsoup.Jsoup,org.jsoup.safety.Safelist, org.jivesoftware.openfire.XMPPServer,org.jivesoftware.openfire.plugin.RawPropertyEditorPlugin,org.jivesoftware.util.ParamUtils,org.jivesoftware.openfire.*,java.util.HashMap,java.util.Map,org.jivesoftware.util.*,org.apache.commons.text.StringEscapeUtils"
+	import="org.jsoup.Jsoup,org.jsoup.safety.Safelist, org.jivesoftware.openfire.XMPPServer,org.jivesoftware.openfire.plugin.RawPropertyEditorPlugin,org.jivesoftware.util.ParamUtils,java.util.Map,org.jivesoftware.util.*,org.apache.commons.text.StringEscapeUtils"
 	errorPage="error.jsp"%>
 
 <%@ taglib uri="http://java.sun.com/jstl/core_rt" prefix="c"%>
@@ -18,7 +15,7 @@
     String propname2 = request.getParameter("propname2");
     String propvalue2 = request.getParameter("propvalue2");
 	
-	RawPropertyEditorPlugin plugin = (RawPropertyEditorPlugin) XMPPServer.getInstance().getPluginManager().getPlugin("rawpropertyeditor");
+	RawPropertyEditorPlugin plugin = (RawPropertyEditorPlugin) XMPPServer.getInstance().getPluginManager().getPluginByName("RawPropertyEditor").orElseThrow();
 	Map<String, String> properties = null;
 
 	if (!group.isEmpty() && group != null) {
@@ -30,9 +27,7 @@
 
 	if (request.getParameter("save") != null && request.getParameter("save").equals("true")) {
 		try {
-
-			System.out.println(group + propname2 + propvalue2 + "");
-			plugin.addGroupProperties(group, propname2, propvalue2);
+            plugin.addGroupProperties(group, propname2, propvalue2);
 			properties = plugin.getGroupProperties(group);
 		} catch (Exception e) {
 
@@ -83,7 +78,6 @@
 .button:hover {
 	background-color: #E55B0A;
 	color: white;
-}
 }
 </style>
 
